@@ -5,8 +5,6 @@ import Lottie from 'lottie-react'
 import crossAnim from "@/public/animations/white-cross-transition.json"
 import Link from 'next/link'
 import Form from '@/components/Form'
-import Bottombuttons from '@/components/Bottombuttons'
-import PasswordStrengthIndicator from '@/components/PasswordStrengthIndicator'
 
 const page = () => {
 
@@ -37,10 +35,6 @@ const page = () => {
             </div>
 
             <Form></Form>
-
-            <PasswordStrengthIndicator></PasswordStrengthIndicator>
-
-            <Bottombuttons></Bottombuttons>
 
             </div>
     </div>
