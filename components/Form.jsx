@@ -109,19 +109,6 @@ const Form = () => {
                     </div>
                 </div>
 
-                <div className='container flex items-center p-1 mx-auto w-[65vw] gap-1'>
-
-                    <div className="indicator1 w-1/4 border h-2 rounded ${isstrong? 'bg-green-500' : bg-gray-600' }"></div>
-                    <div className="indicator2  w-1/4 border h-2 rounded ${isstrong?'bg-green-500' :'bg-gray-600'}"></div>
-                     <div className="indicator3  w-1/4 border h-2 rounded ${isstrong? 'bg-green-500': 'bg-gray-600'}"></div>
-                     <div className="indicator4  w-1/4 border h-2 rounded ${isstrong? 'bg-green-500': 'bg-gray-600'}"></div>
-                     
-                     </div>
-
-                <div className="indicatormessage">
-
-                </div>
-
                 {errors.password && <div className='red rounded'>{errors.password.message}</div>}
 
                 <div className='container flex items-center justify-center'>

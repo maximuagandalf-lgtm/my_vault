@@ -8,3 +8,13 @@
   const passwordValue = watch("password", "");
 
 - install lottie library with "npm i lottie-react".
+
+- create password display card frontend
+
+- then retreive data from backend and display accordingly in display card
+
+- make search bar work
+
+- make the copy, see, edit and delete icons work
+
+- make use of favicon service for dynamic icon display in cards

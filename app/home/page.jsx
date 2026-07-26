@@ -1,7 +1,8 @@
 "use client"
 import React from 'react'
 import SearchBar from "@/components/SearchBar";
-import PasswordElement from '@/components/PasswordElement';
+import EntryCard from '@/components/EntryCard';
+// import vaultentry from '@/backend/models/vaultentry';
 
 const page = () => {
   return (
@@ -9,7 +10,7 @@ const page = () => {
       <div>
       <div className="contents">
         <SearchBar></SearchBar>
-        <PasswordElement></PasswordElement>
+        <EntryCard></EntryCard>
       </div>
     </div>
     </div>
