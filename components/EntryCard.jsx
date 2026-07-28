@@ -6,6 +6,7 @@ import copyAnim from "@/public/animations/copy-transition.json"
 import eyeAnim from "@/public/animations/eye-transition.json"
 import deleteAnim from "@/public/animations/delete-transition.json"
 import editAnim from "@/public/animations/edit-transition.json"
+import Link from 'next/link'
 
 //returns sitedomain to be used in favicon service unde img tag
 function sitedomain(siteurl){
@@ -16,7 +17,7 @@ function sitedomain(siteurl){
         }
 }
 
-const EntryCard = ({sitename, siteurl, username_email, password}) => {
+const EntryCard = ({_id, sitename, siteurl, username_email}) => {
 
     const copy = useRef()
     const eye = useRef()
@@ -27,7 +28,7 @@ const EntryCard = ({sitename, siteurl, username_email, password}) => {
 
     <div className='container rounded-lg flex justify-between items-center border border-gray-600 mt-10 mx-4 sm:mx-8 md:mx-16 lg:mx-20 p-2 min-h-fit min-w-fit w-[90vw] h-[9vh]'>
 
-        <div className="credentials flex items-center jusitfy-center gap-5">
+        <div className="credentials flex items-center justify-center gap-5">
             
             {/* img tag uses favicon service by google to fetch the respective icon of siteurl entered by user */}
 
@@ -54,6 +55,8 @@ const EntryCard = ({sitename, siteurl, username_email, password}) => {
                 lottieRef={copy}
                 />
             </button>
+
+            <Link href={`/showpassword/${_id}`}>
             <button className="see border border-gray-600 rounded-lg p-1 mx-auto hover:bg-gray-600 transition-colors duration-200 cursor-pointer"
             onMouseEnter={()=> eye.current?.play()}
             onMouseLeave={()=> eye.current?.stop()}
@@ -66,6 +69,7 @@ const EntryCard = ({sitename, siteurl, username_email, password}) => {
                 lottieRef={eye}
                 />
             </button>
+            </Link>
             <button className="edit border border-gray-600 rounded-lg p-1 mx-auto hover:bg-gray-600 transition-colors duration-200 cursor-pointer"
             onMouseEnter={()=> edit.current?.play()}
             onMouseLeave={()=> edit.current?.stop()}

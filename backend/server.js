@@ -47,6 +47,16 @@ app.get('/vault', async (req, res) => {
   }
 });
 
+app.get('/vault/:id', async(req, res)=>{
+  try{
+    const entry = await vaultentry.findById(req.params.id);
+    if(!entry){res.status(404).json({message: "No entry found" })};
+    res.status(200).json(entry);
+  }catch(err){
+    res.status(500).json({message: "Something went wrong"})
+  }
+});
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });

@@ -80,10 +80,10 @@ export default function Home() {
         {!loading && !error && filteredEntries.map((entry) => (
           <EntryCard
             key={entry._id}
+            _id={entry._id}
             sitename={entry.sitename}
             siteurl={entry.siteurl}
             username_email={entry.username_email}
-            password={entry.password}
           />
         ))}
       </div>
