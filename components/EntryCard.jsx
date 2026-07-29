@@ -8,7 +8,7 @@ import deleteAnim from "@/public/animations/delete-transition.json"
 import editAnim from "@/public/animations/edit-transition.json"
 import Link from 'next/link'
 
-//returns sitedomain to be used in favicon service unde img tag
+//returns sitedomain to be used in favicon service under img tag
 function sitedomain(siteurl){
     try{
         return new URL(siteurl).hostname.replace("www.", '')
@@ -17,7 +17,7 @@ function sitedomain(siteurl){
         }
 }
 
-const EntryCard = ({_id, sitename, siteurl, username_email}) => {
+const EntryCard = ({_id, sitename, siteurl, username_email, onDelete}) => {
 
     const copy = useRef()
     const eye = useRef()
@@ -70,6 +70,7 @@ const EntryCard = ({_id, sitename, siteurl, username_email}) => {
                 />
             </button>
             </Link>
+
             <button className="edit border border-gray-600 rounded-lg p-1 mx-auto hover:bg-gray-600 transition-colors duration-200 cursor-pointer"
             onMouseEnter={()=> edit.current?.play()}
             onMouseLeave={()=> edit.current?.stop()}
@@ -82,9 +83,11 @@ const EntryCard = ({_id, sitename, siteurl, username_email}) => {
                 lottieRef={edit}
                 />
             </button>
+
             <button className="delete border border-gray-600 rounded-lg p-1 mx-auto hover:bg-gray-600 transition-colors duration-200 cursor-pointer"
             onMouseEnter={()=> del.current?.play()}
             onMouseLeave={()=> del.current?.stop()}
+            onClick={()=> handledelete(_id,sitename)}
             >
                 <Lottie
                 animationData={deleteAnim}

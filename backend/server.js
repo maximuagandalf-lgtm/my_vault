@@ -57,6 +57,19 @@ app.get('/vault/:id', async(req, res)=>{
   }
 });
 
+app.delete('/vault', async(req, res)=>{
+  try{
+    // function deleteOne({filter}, {options}) returns an object with ID and delete data
+    const deletedsitename = req.body.sitename;
+    const deletedEntry = await vaultentry.deleteOne({_id: req.body._id});
+
+    res.status(200).json({message: `${deletedsitename} deleted successfully.`, data: deletedEntry});
+
+  }catch(err){
+    res.status(500).json({message: "Some undefined error occured", error: err.message});
+  }
+})
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });

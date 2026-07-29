@@ -32,6 +32,14 @@ export default function Home() {
     fetchEntries();
   }, []);
 
+  const handleDeleteEntry = (_id) => {
+    //update the entries state again according to the changes in database
+    setEntries(prevEntries => prevEntries.filter(entry=> entry._id !== _id));
+    // filter() returns a new array where true is returned according to the condition defined in the parenthesis,
+
+    //above, entry is an object which loops over the entries state and checks if the _id of entry is not equal to the _id of deleted entry, if true, it is returned in the new array and setEntries() updates the state with this new array, thus removing the deleted entry from the UI.
+  }
+
   const filteredEntries = entries.filter((entry) =>
     //sitename form the entries are accesses one by one then with a loop lowercased and checked every time user makes changes into 
     entry.sitename.toLowerCase().includes(searchTerm.toLowerCase())
@@ -43,7 +51,7 @@ export default function Home() {
 
         <div className="search border border-gray-600 mt-10 mx-4 sm:mx-8 md:mx-16 lg:mx-20 w-[90vw] min-w-fit rounded-md h-[7vh] flex gap-2 items-center px-3"
         onMouseEnter={()=> search.current?.goToAndPlay(0, true)}
-        onMouseLeave={()=> search.current?.goToAndStop()}
+        onMouseLeave={()=> search.current?.goToAndStop(0, true)}
         >
 
           <Lottie
@@ -76,6 +84,7 @@ export default function Home() {
         {!loading && !error && filteredEntries.length === 0 && (
           <p className="text-gray-400">No entries found</p>
         )}
+
 {/* rendering each card on the home page one by one and prop drilling every saved credentials to be displayed and accessed from frontend*/}
         {!loading && !error && filteredEntries.map((entry) => (
           <EntryCard
@@ -84,9 +93,10 @@ export default function Home() {
             sitename={entry.sitename}
             siteurl={entry.siteurl}
             username_email={entry.username_email}
+            onDelete = {handleDeleteEntry}// connects the onDelete function in EntryCard.jsx to the handleDeleteEntry function in this file 
           />
         ))}
       </div>
     </div>
   );
-}
+  }
