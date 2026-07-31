@@ -1,6 +1,6 @@
 "use client"
 import React from 'react'
-import { useRef } from 'react'
+import { useRef,useState } from 'react'
 import Lottie from 'lottie-react'
 import copyAnim from "@/public/animations/copy-transition.json"
 import eyeAnim from "@/public/animations/eye-transition.json"
@@ -17,12 +17,28 @@ function sitedomain(siteurl){
         }
 }
 
-const EntryCard = ({_id, sitename, siteurl, username_email, onDelete, onEdit}) => {
+const EntryCard = ({_id, sitename, siteurl, username_email, onDelete}) => {
 
     const copy = useRef()
     const eye = useRef()
     const del = useRef()
     const edit = useRef()
+
+const handlecopy = async (id)=>{
+    try{
+        let res = await fetch(`http://localhost:8000/vault/${_id}`, {method: 'GET', headers:{'Content-Type': 'application/json'}});
+        if(!res.ok){throw new error("Could not fetch password.")}
+        let pass = await res.json();
+
+        //this will copy password to clipboard
+        await navigator.clipboard.writeText(pass.password);
+
+             alert("Copied to clipboard")
+
+    }catch(err){
+        console.log(err.message)
+    }
+}
 
 const handledelete = async(_id, sitename)=>{
          try{
@@ -61,6 +77,7 @@ const handledelete = async(_id, sitename)=>{
             <button className="copy border border-gray-600 rounded-lg p-1 mx-auto hover:bg-gray-600 transition-colors duration-200 cursor-pointer" 
             onMouseEnter={()=> copy.current?.play()} 
             onMouseLeave={()=> copy.current?.stop()}
+            onClick={()=> handlecopy(_id)}
             >
                 <Lottie
                 animationData = {copyAnim}
