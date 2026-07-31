@@ -1,10 +1,11 @@
 "use client"
 import React from 'react'
 import Lottie from 'lottie-react'
-import { useRef } from 'react'
+import { useRef, useEffect } from 'react'
 import refreshAnim from "@/public/animations/refresh-transition.json"
 import { useForm } from 'react-hook-form'
 import Link from 'next/link'
+import {useRouter} from 'next/navigation'
 
 const special_char = ["!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "-", "_"];
 const num = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"];
@@ -29,16 +30,42 @@ function checkspecialchar(passwordvalue){
 
 
 
-const Form = () => {
+const Form = ({editId}) => {
     const reenter = useRef()
+    const router = useRouter() //this will redirect user to homepage after successfully saving the entry
 
     const {
         register,
         handleSubmit,
         formState: { errors, isSubmitting },
         watch,
-        setError
+        setError,
+        reset //reset is used to automatically fill our form with retreived entries from database when user clicks on edit button. Provided by react-hook-form library
     } = useForm();
+
+    //fetching old data if editing an entry
+    useEffect(()=>{
+        if(editId){
+            const fetchOlddata = async() => {
+                try{
+                    //get request to read the data
+                    let res = await fetch(`http://localhost:8000/vault/${editId}`);
+                    let oldData = await res.json();
+
+                    //putting oldData back into form
+                    reset({
+                        sitename: oldData.sitename,
+                        siteurl: oldData.siteurl,
+                        username_email: oldData.username_email,
+                        password: oldData.password
+                    });
+                }catch(err){
+                    console.log(err.message);
+                }
+            }
+            fetchOlddata();
+        }
+    }, [editId, reset]); //this dependancy array runs this function only when the form is loaded(there is a change in editId and reset).
 
     const passwordvalue = watch("password", "")
     const hasnum = checknum(passwordvalue)
@@ -46,12 +73,6 @@ const Form = () => {
     const isstrong = hasnum && hasspecialchar
 
     const onSubmit = async (data) => {
-        let a = await fetch("http://localhost:8000/addpassword", {
-            method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data)
-        });
-
-        let res = await a.text()
-        console.log(data, res)
 
         if (!hasnum) {
             setError("password", { message: "password should have atleast one numeral" })
@@ -63,6 +84,27 @@ const Form = () => {
             return;
         }
 
+        const url = 'http://localhost:8000/addpassword'
+        const method = 'POST'
+        if(editId){
+            const url = `http://localhost:800/vault/editId`
+            const method = 'PUT'
+        }
+
+        try{
+            let a = await fetch(url, {
+                method: method, 
+                headers: { 'Content-Type': 'application/json' }, 
+                body: JSON.stringify(data)
+            });
+
+            //if entry was saved successfully user will be redirected to home/dashboard
+            if(a.ok){
+                router.push('/home')
+            }
+        }catch(err){
+            console.log(err.message)
+        }
     }
 
     return (

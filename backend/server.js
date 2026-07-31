@@ -40,8 +40,10 @@ app.post('/addpassword', async (req,res)=>{
 // now fetch the entries from database
 app.get('/vault', async (req, res) => {
   try {
+    //fetching entries to be displayed on dashboard page
     const entries = await vaultentry.find();
     res.status(200).json(entries);
+
   } catch (err) {
     res.status(500).json({ message: "Could not fetch entries", error: err.message });
   }
@@ -67,6 +69,51 @@ app.delete('/vault', async(req, res)=>{
 
   }catch(err){
     res.status(500).json({message: "Some undefined error occured", error: err.message});
+  }
+})
+
+//reading entries for editing
+app.get('/vault/:_id', async(req, res)=>{
+  try{
+    const editingEntry = await vaultentry.findById(req.params._id);
+
+    //if error
+    if(!editingEntry){
+      return res.status(404).json({message: "Entry not found"})}
+      // if no error
+       res.status(200).json(editingEntry)
+
+  }catch(err){
+    res.status(500).json({message: "Couldn't read the entry", error: err.message})
+  }
+})
+
+//PUT and POST requests send html body to server unlike DELETE and GET requests
+app.put('/vault/:id', async(req, res)=>{
+  try{
+    //updating the entry in Database
+    const updateentry = await vaultentry.findByIdAndUpdate(req.params.id, {
+      sitename:req.body.sitename,
+      siteurl:req.body.siteurl,
+      username_email:req.body.username_email,
+      password: req.body.password
+    }, {new:true, runValidators:true}); //findbyIdAnd Update(id, {updatebody}, {options});
+    //by default Mongoose’s findByIdAndUpdate() returns the document as it was before the update happened.
+    //hence we use {new: true} this make the function return new value instedd of old one 
+    // we pass runValidators:true to make sure Mongoose checks all schema rules (like required: true, maxLength: 50, min: 5, etc.) for the updated entry.
+
+    if(!updateentry){
+      res.status(404).json({message:"Entry not found"})
+    }
+
+    console.log("Updated Entry: ", updateentry);
+    
+    res.status(200).json({
+      message: "Entry Updated Succcessfully",
+      data: updateentry
+  });
+  }catch(err){
+    res.status(500).json({message: "Something went wrong.", err: err.message});
   }
 })
 

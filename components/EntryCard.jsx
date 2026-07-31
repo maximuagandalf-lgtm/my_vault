@@ -17,12 +17,27 @@ function sitedomain(siteurl){
         }
 }
 
-const EntryCard = ({_id, sitename, siteurl, username_email, onDelete}) => {
+const EntryCard = ({_id, sitename, siteurl, username_email, onDelete, onEdit}) => {
 
     const copy = useRef()
     const eye = useRef()
     const del = useRef()
     const edit = useRef()
+
+const handledelete = async(_id, sitename)=>{
+         try{
+            let a = await fetch('http://localhost:8000/vault', {method: 'DELETE', headers:{'Content-Type': 'application/json'}, body: JSON.stringify({_id, sitename})
+        });
+
+            onDelete(_id); //call the onDelete function to update the UI state after deletion
+
+            let res = await a.json()
+            console.log(res.message)
+
+         }catch(err){
+            console.log(err.message)
+         }
+    }
 
   return (
 
@@ -71,7 +86,9 @@ const EntryCard = ({_id, sitename, siteurl, username_email, onDelete}) => {
             </button>
             </Link>
 
-            <button className="edit border border-gray-600 rounded-lg p-1 mx-auto hover:bg-gray-600 transition-colors duration-200 cursor-pointer"
+            <Link href={`/addpassword?editId=${_id}`}//passing the _id of the entry as a url if addpassword is opened
+            >
+                <button className="edit border border-gray-600 rounded-lg p-1 mx-auto hover:bg-gray-600 transition-colors duration-200 cursor-pointer"
             onMouseEnter={()=> edit.current?.play()}
             onMouseLeave={()=> edit.current?.stop()}
             >
@@ -83,6 +100,7 @@ const EntryCard = ({_id, sitename, siteurl, username_email, onDelete}) => {
                 lottieRef={edit}
                 />
             </button>
+            </Link>
 
             <button className="delete border border-gray-600 rounded-lg p-1 mx-auto hover:bg-gray-600 transition-colors duration-200 cursor-pointer"
             onMouseEnter={()=> del.current?.play()}
