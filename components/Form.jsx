@@ -49,7 +49,7 @@ const Form = ({editId}) => {
             const fetchOlddata = async() => {
                 try{
                     //get request to read the data
-                    let res = await fetch(`http://localhost:8000/vault/${editId}`);
+                    let res = await fetch(`${process.env.backend_api}/vault/${editId}`);
                     let oldData = await res.json();
 
                     //putting oldData back into form
@@ -84,10 +84,10 @@ const Form = ({editId}) => {
             return;
         }
 
-        const url = 'http://localhost:8000/addpassword'
+        const url = `${process.env.backend_api}/addpassword`
         const method = 'POST'
         if(editId){
-            const url = `http://localhost:800/vault/editId`
+            const url = `${process.env.backend_api}/vault/editId`
             const method = 'PUT'
         }
 
