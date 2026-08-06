@@ -26,8 +26,8 @@ const EntryCard = ({_id, sitename, siteurl, username_email, onDelete}) => {
 
 const handlecopy = async (id)=>{
     try{
-        let res = await fetch(`http://localhost:8000/vault/${_id}`, {method: 'GET', headers:{'Content-Type': 'application/json'}});
-        if(!res.ok){throw new error("Could not fetch password.")}
+        let res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/vault/${_id}`, {method: 'GET', headers:{'Content-Type': 'application/json'}});
+        if(!res.ok){throw new Error("Could not fetch password.")}
         let pass = await res.json();
 
         //this will copy password to clipboard
@@ -40,20 +40,24 @@ const handlecopy = async (id)=>{
     }
 }
 
-const handledelete = async(_id, sitename)=>{
-         try{
-            let a = await fetch('http://localhost:8000/vault', {method: 'DELETE', headers:{'Content-Type': 'application/json'}, body: JSON.stringify({_id, sitename})
+const handledelete = async (_id, sitename) => {
+    try {
+        let a = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/vault`, {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ _id, sitename })
         });
 
-            onDelete(_id); //call the onDelete function to update the UI state after deletion
+        let res = await a.json();
 
-            let res = await a.json()
-            console.log(res.message)
+        if (!a.ok) throw new Error(res.message || "Failed to delete entry");
 
-         }catch(err){
-            console.log(err.message)
-         }
+        console.log(res.message);
+        onDelete(_id); // only remove from UI after confirmed success
+    } catch (err) {
+        console.log(err.message);
     }
+}
 
   return (
 

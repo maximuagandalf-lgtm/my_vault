@@ -15,7 +15,7 @@ export default function showpassword () {
   useEffect(()=>{
     async function fetchentry (){
         try{
-            const res = await fetch(`${process.env.backend_api}/vault/${id}`);
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/vault/${id}`);
             if(!res.ok) throw new Error("Couldn't find that entry");
             const data = await res.json();
             setEntry(data);

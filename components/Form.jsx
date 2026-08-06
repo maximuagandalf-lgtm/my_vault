@@ -49,7 +49,7 @@ const Form = ({editId}) => {
             const fetchOlddata = async() => {
                 try{
                     //get request to read the data
-                    let res = await fetch(`${process.env.backend_api}/vault/${editId}`);
+                    let res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/vault/${editId}`);
                     let oldData = await res.json();
 
                     //putting oldData back into form
@@ -84,11 +84,11 @@ const Form = ({editId}) => {
             return;
         }
 
-        const url = `${process.env.backend_api}/addpassword`
-        const method = 'POST'
+        let url = `${process.env.NEXT_PUBLIC_API_URL}/addpassword`
+        let method = 'POST'
         if(editId){
-            const url = `${process.env.backend_api}/vault/editId`
-            const method = 'PUT'
+            url = `${process.env.NEXT_PUBLIC_API_URL}/vault/${editId}`
+            method = 'PUT'
         }
 
         try{

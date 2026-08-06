@@ -49,13 +49,13 @@ app.get('/vault', async (req, res) => {
   }
 });
 
-app.get('/vault/:id', async(req, res)=>{
-  try{
+app.get('/vault/:id', async (req, res) => {
+  try {
     const entry = await vaultentry.findById(req.params.id);
-    if(!entry){return res.status(404).json({message: "No entry found" })};
-    return res.status(200).json(entry);
-  }catch(err){
-    res.status(500).json({message: "Something went wrong"})
+    if (!entry) return res.status(404).json({ message: "Entry not found" });
+    res.status(200).json(entry);
+  } catch (err) {
+    res.status(500).json({ message: "Something went wrong", error: err.message });
   }
 });
 
@@ -69,22 +69,6 @@ app.delete('/vault', async(req, res)=>{
 
   }catch(err){
     res.status(500).json({message: "Some undefined error occured", error: err.message});
-  }
-})
-
-//reading entries for editing
-app.get('/vault/:_id', async(req, res)=>{
-  try{
-    const editingEntry = await vaultentry.findById(req.params._id);
-
-    //if error
-    if(!editingEntry){
-      return res.status(404).json({message: "Entry not found"})}
-      // if no error
-       res.status(200).json(editingEntry)
-
-  }catch(err){
-    res.status(500).json({message: "Couldn't read the entry", error: err.message})
   }
 })
 
