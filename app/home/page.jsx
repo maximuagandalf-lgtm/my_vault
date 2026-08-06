@@ -17,7 +17,7 @@ export default function Home() {
     //this function fetches data from get request of server and stores them into entries state
     async function fetchEntries() {
       try {
-        const res = await fetch(`${process.env.backend_api}/vault`);
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/vault`);
         if (!res.ok) throw new Error("Failed to fetch vault entries");
         const data = await res.json();
         setEntries(data);
